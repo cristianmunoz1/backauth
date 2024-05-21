@@ -50,6 +50,12 @@ public class ControlUser {
         }
     }
 
+    @GetMapping("/listUsers")
+    public Iterable<User> getAllUsers()
+    {
+        return serviceUser.getAllUsers();
+    }
+
     @PutMapping("/updatePassword")
     public ResponseEntity<User> updatePassword(@RequestBody Map<String, String> passwords)
     {
@@ -75,6 +81,19 @@ public class ControlUser {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/updateUserRole")
+    public ResponseEntity<User> updateUserRole(@RequestBody User user)
+    {
+
+        Optional<User> existingUserOptiOnal = serviceUser.getUser(user.getUserId());
+        if(existingUserOptiOnal.isPresent())
+        {
+            return new ResponseEntity<>(serviceUser.updateUserRole(user.getUserId(), user.getUserRole()), HttpStatus.ACCEPTED);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
     @DeleteMapping("/delete/{id}")
     public boolean delete(@PathVariable("id") String userId)

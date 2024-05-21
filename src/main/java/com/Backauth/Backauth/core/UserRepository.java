@@ -13,6 +13,9 @@ public class UserRepository{
     @Autowired
     private UserCrudRepository userCrudRepository;
 
+    public Iterable<User> findAllUsers(){
+        return userCrudRepository.findAll();
+    }
     public Optional<User> getUser(String userId)
     {
         return userCrudRepository.findById(userId);

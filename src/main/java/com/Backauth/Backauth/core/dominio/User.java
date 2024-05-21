@@ -1,18 +1,19 @@
 package com.Backauth.Backauth.core.dominio;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Builder
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+
 @Table(name = "USERS")
 public class User implements UserDetails {
     @Id
@@ -107,10 +108,10 @@ public class User implements UserDetails {
     public void setUserRole(Integer userRole) {
         this.userRole = userRole;
     }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        String role = "ROLE_" + userRole;
+        return Collections.singleton(new SimpleGrantedAuthority(role));
     }
 
     @Override
@@ -141,5 +142,17 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User(String userId, String userIdTipe, String userName, String userLastname, String userPhoneNumber, String userEmail, String userPassword, Integer userRole, Roles roles) {
+        this.userId = userId;
+        this.userIdTipe = userIdTipe;
+        this.userName = userName;
+        this.userLastname = userLastname;
+        this.userPhoneNumber = userPhoneNumber;
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userRole = userRole;
+        this.roles = roles;
     }
 }

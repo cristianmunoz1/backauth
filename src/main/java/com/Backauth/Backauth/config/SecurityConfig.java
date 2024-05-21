@@ -27,6 +27,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authRequest ->
                         authRequest
                                 .requestMatchers("/auth/**", "/swagger-ui/**","/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                                .requestMatchers("/users/updateUserRole", "/users/listUsers").hasAnyRole("101", "100")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager ->

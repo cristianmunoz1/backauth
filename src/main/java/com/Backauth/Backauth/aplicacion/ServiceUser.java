@@ -60,6 +60,23 @@ public class ServiceUser {
         return userRepository.save(existingUser);
     }
 
+    public User updateUserRole(String id, int role){
+        Optional<User> userOptionalExist = getUser(id);
+        if (userOptionalExist.isEmpty()) {
+            throw new IllegalArgumentException("El usuario no existe en la base de datos.");
+        }
+
+        if ((role != 100)&&(role != 101)&&(role != 102)){
+            throw new IllegalArgumentException("El role que ingresó no está definido en el sistema.");
+        }
+
+        User existingUser = userOptionalExist.get();
+
+        existingUser.setUserRole(role);
+
+        return userRepository.save(existingUser);
+    }
+
     public User updatePassword(User user)
     {
         return userRepository.updatePassword(user);
@@ -71,6 +88,10 @@ public class ServiceUser {
             userRepository.delete(userId);
             return true;
         }).orElse(false);
+    }
+
+    public Iterable<User> getAllUsers(){
+        return userRepository.findAllUsers();
     }
 
     public Optional<User> getUserEmail(String userEmail)
